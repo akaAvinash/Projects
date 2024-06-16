@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <p>Enter your text or URL</p>
+        <input type="text" id="qrText" placeholder="Enter your text or URL">
+        <div id="imgBox">
+            <div class="loader" id="loader"></div>
+            <img src="" id="qrImage" alt="QR Code">
+        </div>
+        <button onclick="generateQR()" id="generate-button">Generate QR Code</button>
+    </div>
+    <script>
+        let imgBox = document.getElementById("imgBox");
+        let qrImage = document.getElementById("qrImage");
+        let qrText = document.getElementById("qrText");
+        let loader = document.getElementById("loader");
+
+        function generateQR() {
+            if (qrText.value.trim() === "") {
+                alert("Please enter a valid text or URL.");
+                return;
+            }
+
+            loader.style.display = "block";
+            qrImage.style.display = "none";
+
+            qrImage.onload = function() {
+                loader.style.display = "none";
+                qrImage.style.display = "block";
+            }
+
+            qrImage.onerror = function() {
+                loader.style.display = "none";
+                alert("Failed to generate QR code. Please try again.");
+            }
+
+            qrImage.src = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" + encodeURIComponent(qrText.value);
+        }
+    </script>
+</body>
+</html>
